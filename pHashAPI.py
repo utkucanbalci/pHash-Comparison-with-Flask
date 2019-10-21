@@ -72,7 +72,7 @@ def compareImages():#compares two images
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 @app.route("/api/comparePaths",methods=["POST"])
-def comparePaths():#compares two image filepaths
+def comparePaths():#compares from two image filepaths
 
     dir1 = request.args.get("im1", None )
     dir2 = request.args.get("im2", None )
