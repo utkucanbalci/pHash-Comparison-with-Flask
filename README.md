@@ -10,7 +10,7 @@ This is an API for computing and comparing pHashes. Basic usage is provided in c
 
 /api/comparePaths is for comparing images by posting their filepaths. Result is true if both are identical (user and API should be running at the same machine or have access to the same folder)
 
-Sample output for requests in cli.py:
+Sample output of requests in cli.py:
 
 {"pHash": "ada30ebac65b888d"}
 
