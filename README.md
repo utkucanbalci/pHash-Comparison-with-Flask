@@ -4,7 +4,7 @@ This is an API for computing and comparing pHashes. Basic usage is provided in c
 
 /api/computeImage is for computing a pHash of an image by posting that image.
 
-/api/computePath is for computing a pHash of an image by sending its filepath.(user and API should be running at the same machine or have access to the same folder)
+/api/computePath is for computing a pHash of an image by posting its filepath.(user and API should be running at the same machine or have access to the same folder)
 
 /api/compareImages is for comparing images' pHashes by posting those images. Result is true if both are identical.
 
