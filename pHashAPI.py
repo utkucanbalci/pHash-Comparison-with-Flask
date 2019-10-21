@@ -1,7 +1,5 @@
 from flask import Flask, request, Response
 import jsonpickle
-import numpy as np
-import cv2
 import os
 from PIL import Image
 import imagehash
