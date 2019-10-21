@@ -21,5 +21,5 @@ Sample output for requests in cli.py:
 {"pHash1": "a85ab7b553f00b4a", "pHash2": "ada30ebac65b888d", "result": "False"}
 
 usage:
-
-just run python3 pHashAPI.py for starting the API.
+create your upload folder and state it in pHashAPI.py
+After that, just run python3 pHashAPI.py for starting the API.
