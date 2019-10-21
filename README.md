@@ -4,11 +4,11 @@ This is an API for computing and comparing pHashes. Basic usage is provided in c
 
 /api/computeImage is for computing a pHash of an image by posting that image.
 
-/api/computePath is for computing a pHash of an image by sending its filepath.(user and API should be running at the same machine)
+/api/computePath is for computing a pHash of an image by sending its filepath.(user and API should be running at the same machine or have access to the same folder)
 
 /api/compareImages is for comparing images' pHashes by posting those images. Result is true if both are identical.
 
-/api/comparePaths is for comparing images by posting their filepaths. Result is true if both are identical (user and API should be running at the same machine)
+/api/comparePaths is for comparing images by posting their filepaths. Result is true if both are identical (user and API should be running at the same machine or have access to the same folder)
 
 Sample output for requests in cli.py:
 
