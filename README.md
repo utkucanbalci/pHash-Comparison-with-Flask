@@ -6,19 +6,19 @@ This is an API for computing and comparing pHashes. Basic usage is provided in c
 
 /api/computePath is for computing a pHash of an image by posting its filepath.(user and API should be running at the same machine or have access to the same folder)
 
-/api/compareImages is for comparing images' pHashes by posting those images. Result is true if both are identical.
+/api/compareImages is for comparing images' pHashes by posting those images. Result is the calculated hamming distance between two images' pHashes.
 
-/api/comparePaths is for comparing images by posting their filepaths. Result is true if both are identical (user and API should be running at the same machine or have access to the same folder)
+/api/comparePaths is for comparing images by posting their filepaths. Result is the calculated hamming distance between two images' pHashes. (user and API should be running at the same machine or have access to the same folder)
 
 Sample output of requests in cli.py:
 
-{"pHash": "ada30ebac65b888d"}
+{"pHash": "ada30ebac65b888d"}  
 
 {"pHash": "a85ab7b553f00b4a"}
 
-{"pHash1": "ada30ebac65b888d", "pHash2": "a85ab7b553f00b4a", "result": "False"}
+{"hamming_distance": "0", "pHash1": "ada30ebac65b888d", "pHash2": "ada30ebac65b888d"}
 
-{"pHash1": "a85ab7b553f00b4a", "pHash2": "ada30ebac65b888d", "result": "False"}
+{"hamming_distance": "14", "pHash1": "a85ab7b553f00b4a", "pHash2": "ada30ebac65b888d"}
 
 usage:
 
