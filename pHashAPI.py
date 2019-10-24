@@ -5,6 +5,7 @@ import cv2
 import os
 from PIL import Image
 import imagehash
+import uuid
 
 app = Flask(__name__)
 
@@ -17,15 +18,22 @@ def hamming_distance(s1, s2):#https://en.wikipedia.org/wiki/Hamming_distance
 
     return sum(el1 != el2 for el1, el2 in zip(s1, s2))
 
+def getType(resource):
+        splitted = resource.split('.')
+        return '.'+splitted[-1]
+
 @app.route("/api/computeImage",methods=["POST"])
 def computeImage():#calculates phash of an image
     try:
 
         image = request.files["image"]
         filename = image.filename
-        image_path=UPLOAD_FOLDER+"/"+filename
-
-        image.save(os.path.join(app.config["UPLOAD_FOLDER"],filename))
+        # image_path=UPLOAD_FOLDER+"/"+filename
+        type = getType(filename)
+        uid = uuid.uuid4().hex[:8]
+        tmp_filename = str(uid) + str(type)
+        image_path=UPLOAD_FOLDER+"/"+tmp_filename
+        image.save(image_path)
 
         image_phash = imagehash.phash(Image.open(image_path))
 
@@ -77,14 +85,27 @@ def compareImages():#compares two images
         image1 = request.files["image1"]
         image2 = request.files["image2"]
 
-        image1.save(os.path.join(app.config["UPLOAD_FOLDER"],image1.filename))
-        image2.save(os.path.join(app.config["UPLOAD_FOLDER"],image2.filename))
+        type1 = getType(image1.filename)
+        uid1 = uuid.uuid4().hex[:8]
+        tmp_filename1 = str(uid1) + str(type1)
+        image_path1=UPLOAD_FOLDER+"/"+tmp_filename1
+        image1.save(image_path1)
 
-        image_path1=UPLOAD_FOLDER+"/"+image1.filename
-        image_path2=UPLOAD_FOLDER+"/"+image2.filename
+        type2 = getType(image1.filename)
+        uid2 = uuid.uuid4().hex[:8]
+        tmp_filename2 = str(uid2) + str(type2)
+        image_path2=UPLOAD_FOLDER+"/"+tmp_filename2
+        image2.save(image_path2)
+
+        # image1.save(os.path.join(app.config["UPLOAD_FOLDER"],image1.filename))
+        # image2.save(os.path.join(app.config["UPLOAD_FOLDER"],image2.filename))
+
+        # image_path1=UPLOAD_FOLDER+"/"+image1.filename
+        # image_path2=UPLOAD_FOLDER+"/"+image2.filename
 
         image_phash1 = imagehash.phash(Image.open(image_path1))
         image_phash2 = imagehash.phash(Image.open(image_path2))
+
 
         cmp = hamming_distance(image_phash1, image_phash2)
 
