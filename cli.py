@@ -13,7 +13,7 @@ path2 = ""
 
 
 resp1 = requests.post(url1, files = files1)
-resp2 = requests.post(url2 +"?im1="+path)
+resp2 = requests.post(url2 +"?im1=2"+path)
 resp3 = requests.post(url3, files = files2)
 resp4 = requests.post(url4 +"?im1="+path+"&&im2="+path2)
 

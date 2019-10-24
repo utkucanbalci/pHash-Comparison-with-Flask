@@ -1,5 +1,7 @@
 from flask import Flask, request, Response
 import jsonpickle
+import numpy as np
+import cv2
 import os
 from PIL import Image
 import imagehash
@@ -9,15 +11,22 @@ app = Flask(__name__)
 UPLOAD_FOLDER = ''
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+def hamming_distance(s1, s2):#https://en.wikipedia.org/wiki/Hamming_distance
+    s1 = str(s1)
+    s2 = str(s2)
+
+    return sum(el1 != el2 for el1, el2 in zip(s1, s2))
+
 @app.route("/api/computeImage",methods=["POST"])
 def computeImage():#calculates phash of an image
 
     image = request.files["image"]
-    image.save(os.path.join(app.config["UPLOAD_FOLDER"],image.filename))
     filename = image.filename
     image_path=UPLOAD_FOLDER+"/"+filename
-    image_phash = imagehash.phash(Image.open(image_path))
 
+    image.save(os.path.join(app.config["UPLOAD_FOLDER"],filename))
+
+    image_phash = imagehash.phash(Image.open(image_path))
 
     response = {'pHash': '{}'.format(image_phash)}
 
@@ -52,15 +61,19 @@ def compareImages():#compares two images
 
     image1 = request.files["image1"]
     image2 = request.files["image2"]
+
     image1.save(os.path.join(app.config["UPLOAD_FOLDER"],image1.filename))
     image2.save(os.path.join(app.config["UPLOAD_FOLDER"],image2.filename))
+
     image_path1=UPLOAD_FOLDER+"/"+image1.filename
     image_path2=UPLOAD_FOLDER+"/"+image2.filename
+
     image_phash1 = imagehash.phash(Image.open(image_path1))
     image_phash2 = imagehash.phash(Image.open(image_path2))
-    cmp = image_phash1 == image_phash2
 
-    response = {'pHash1': '{}'.format(image_phash1), 'pHash2': '{}'.format(image_phash2), 'result': '{}'.format(str(cmp))
+    cmp = hamming_distance(image_phash1, image_phash2)
+
+    response = {'pHash1': '{}'.format(image_phash1), 'pHash2': '{}'.format(image_phash2), 'hamming_distance': '{}'.format(str(cmp))
                 }
 
     response_pickled = jsonpickle.encode(response)
@@ -72,7 +85,7 @@ def compareImages():#compares two images
     return Response(response=response_pickled, status=200, mimetype="application/json")
 
 @app.route("/api/comparePaths",methods=["POST"])
-def comparePaths():#compares from two image filepaths
+def comparePaths():#compares two image filepaths
 
     dir1 = request.args.get("im1", None )
     dir2 = request.args.get("im2", None )
@@ -82,10 +95,10 @@ def comparePaths():#compares from two image filepaths
 
         image_phash1 = imagehash.phash(Image.open(dir1))
         image_phash2 = imagehash.phash(Image.open(dir2))
-        cmp = image_phash1 == image_phash2
+        cmp = hamming_distance(image_phash1, image_phash2)
 
-        response = {'pHash1': '{}'.format(image_phash1), 'pHash2': '{}'.format(image_phash2), 'result': '{}'.format(str(cmp))
-                        }
+        response = {'pHash1': '{}'.format(image_phash1), 'pHash2': '{}'.format(image_phash2), 'hamming_distance': '{}'.format(str(cmp))
+                    }
 
         response_pickled = jsonpickle.encode(response)
 
